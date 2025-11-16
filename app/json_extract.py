@@ -5,10 +5,14 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
 from .config_store import load_api_key
 
+# Ensure environment variables from a local .env file are loaded before use.
+load_dotenv()
+
 # ---------------------------------------------------------------------------------
-YOUR_API_KEY = os.getenv("GEMENI_API_KEY")
+YOUR_API_KEY = os.getenv("GEMINI_API_KEY")
 # ---------------------------------------------------------------------------------
 
 class Nodule(BaseModel):

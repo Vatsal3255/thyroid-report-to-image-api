@@ -11,6 +11,8 @@ from pathlib import Path
 BASE_IMAGE_PATH = Path(__file__).resolve().parent / "static" / "Base Image.png"
 OUTPUT_IMAGE_PATH = "thyroid_report_output_final.png"
 
+FONT_PATH = Path(__file__).resolve().parent / "static" / "arialceb.ttf"
+
 NODULE_SCALE = 1.5
 
 # -----------------------------
@@ -80,7 +82,7 @@ RIGHT_KEYS = [k for k in AREAS_ORIG if k.startswith("right")]
 
 def font(size: int):
     try:
-        return ImageFont.truetype("DejaVuSans.ttf", size)
+        return ImageFont.truetype(FONT_PATH, size)
     except:
         return ImageFont.load_default()
 

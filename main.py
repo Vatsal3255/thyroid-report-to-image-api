@@ -7,13 +7,16 @@ from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel
 from io import BytesIO
 
-from .config_store import save_api_key, load_api_key
+from app.config_store import save_api_key, load_api_key
 
-from . import auth as auth_router
-from . import patients as patients_router
-from . import reports as reports_router
-from .json_extract import extract_info, YOUR_API_KEY
-from .generate_image import generate_image as render_thyroid_image
+from app import auth as auth_router
+from app import patients as patients_router
+from app import reports as reports_router
+from app.json_extract import extract_info, YOUR_API_KEY
+from app.generate_image import generate_image as render_thyroid_image
+
+from dotenv import load_dotenv
+load_dotenv()
 
 app = FastAPI(title="Image Gen Demo")
 
