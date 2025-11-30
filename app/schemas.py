@@ -25,30 +25,20 @@ class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
-# Patient / Report
-class PatientCreate(BaseModel):
-    patient_id: int
-    full_name: str
-
-class PatientOut(BaseModel):
-    patient_id: int
-    full_name: str
-    class Config:
-        from_attributes = True
-
+# Reports
 class ReportOut(BaseModel):
     report_id: int
     generated_at: datetime
+    ultrasound_date: Optional[datetime]
     class Config:
         from_attributes = True
 
 class ReportDetail(BaseModel):
     report_id: int
-    patient_id: int
-    patient_name: str
     raw_report: str
     json_report: Optional[Dict[str, Any]]
     generated_at: datetime
+    thyroid_report_date: Optional[datetime]
     has_image: bool
     image_content_type: Optional[str]
     class Config:

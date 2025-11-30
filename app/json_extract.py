@@ -27,6 +27,7 @@ class Nodule(BaseModel):
 
 class ThyroidUltrasoundReport(BaseModel):
     """Overall schema for the thyroid ultrasound report summary."""
+    ultrasound_date: str = Field(description="Date of the ultrasound. Prefer ISO format YYYY-MM-DD. Use 'Not mentioned' if unavailable.")
     gland_size: str = Field(description="General statement on gland size or dimensions.")
     overall_echotexture: str = Field(description="General description of the background thyroid echotexture, e.g., 'homogeneous', 'heterogeneous', 'uneven'.")
     nodules: List[Nodule] = Field(description="A list of all distinct nodules identified in the report.")
@@ -49,13 +50,21 @@ def extract_thyroid_info(report_text: str, api_key: str) -> dict:
     system_instruction = (
         "You are an expert medical data extraction tool specializing in radiology reports. "
         "Your task is to accurately parse the provided thyroid ultrasound report and extract "
-        "all specified clinical details into the required JSON schema format. "
+        "all specified clinical details into the required JSON schema format. Extract the exact ultrasound date as written "
+        "in the report (no adjustments or day/month swapping) and normalize it to YYYY-MM-DD; if absent return 'Not mentioned'. "
         "Ensure the nodule's **LOBE** (Right, Left, Isthmus) and **REGION** (upper, lower, middle, etc.) "
         "are extracted into separate fields. Only output the requested JSON object."
     )
     
     prompt = f"""
     Analyze the following thyroid ultrasound report and extract the details into the structured format.
+
+    Convert the Region to upper, upper middle, middle, lower middle, lower from the word of the report (e.g. superior -> upper).
+    Extract the ultrasound date exactly as written in the report with no day/month swapping or timezone shifts, and output it as ISO YYYY-MM-DD.
+    Examples:
+      "29 Nov, 2025" -> "2025-11-29"
+      "12/03/2024" (dd/MM/yyyy) -> "2024-03-12"
+      If no date, return "Not mentioned".
     
     THYROID ULTRASOUND REPORT:
     ---

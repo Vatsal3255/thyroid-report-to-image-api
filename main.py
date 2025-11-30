@@ -10,7 +10,6 @@ from io import BytesIO
 from app.config_store import save_api_key, load_api_key
 
 from app import auth as auth_router
-from app import patients as patients_router
 from app import reports as reports_router
 from app.json_extract import extract_info, YOUR_API_KEY
 from app.generate_image import generate_image as render_thyroid_image
@@ -29,7 +28,6 @@ app.add_middleware(
 )
 
 app.include_router(auth_router.router)
-app.include_router(patients_router.router)
 app.include_router(reports_router.router)
 
 class EchoIn(BaseModel):
